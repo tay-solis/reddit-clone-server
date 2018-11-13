@@ -9,8 +9,13 @@ class RedditProfile(models.Model):
     bio = models.TextField()
     karma = models.IntegerField()
     icon_url = models.TextField()
+    def vote(self, i):
+        self.votes += i
+        return self.votes
+
     def natural_key(self):
         return dict(
+            id=self.id,
             user = self.user_id.natural_key(), 
             display_name = self.display_name,
             bio = self.bio,
@@ -20,6 +25,7 @@ class RedditProfile(models.Model):
 
     def to_json(self):
         return dict(
+            id= self.id,
             user = self.user_id.natural_key(), 
             display_name = self.display_name,
             bio = self.bio,
@@ -34,6 +40,7 @@ class SubReddit(models.Model):
 
     def natural_key(self):
         return dict(
+            id = self.id,
             name = self.name, 
             slug = self.slug)
 
@@ -44,8 +51,14 @@ class TextPost(models.Model):
     content = models.TextField()
     thumbnail_image_url = models.TextField()
     votes = models.IntegerField()
+
+    def vote(self, i):
+        self.votes += i
+        return self.votes
+
     def natural_key(self):
         return dict(
+            id = self.id,
             user = self.user_id.natural_key(), 
             subreddit = self.subreddit_id.natural_key(), 
             tag_line = self.tag_line, 
@@ -55,6 +68,7 @@ class TextPost(models.Model):
 
     def to_json(self):
         return dict(
+            id = self.id,
             user=self.user_id.natural_key(),
             subreddit=self.subreddit_id.natural_key(),
             tag_line = self.tag_line,
@@ -70,8 +84,13 @@ class Comment(models.Model):
     content = models.TextField()
     def to_json(self):
         return dict(
+            id = self.id,
             user=[self.user_id.natural_key()],
             post=[self.post_id.natural_key()],
             content = self.content,
             votes=self.votes
         )
+
+    def vote(self, i):
+        self.votes += i
+        return self.votes
