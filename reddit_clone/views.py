@@ -4,12 +4,14 @@ from django.http import JsonResponse, HttpResponse
 from django.core import serializers
 from django.db.models import F
 from django.contrib.auth.models import User
+import json
 
 ####### FRONT PAGE #######
 def all_posts(request):
-    posts = TextPost.objects.all().values()
-    posts = list(posts) 
-    return JsonResponse(posts, safe=False)
+    posts = TextPost.objects.all()
+    results = [post.to_json() for post in posts]
+
+    return HttpResponse(json.dumps(results), content_type="application/json")
 
 ####### POSTS VIEWS #######
 # GET all posts from subreddit
@@ -47,14 +49,17 @@ def post_minus_vote(request, pk):
 ####### COMMENT VIEWS ########
 # GET all comments on a post
 def post_comments(request, post_id):
-    post_comments = serializers.serialize('json', Comment.objects.filter(post_id=post_id))
-    return HttpResponse(post_comments, content_type='json')
+    comments = Comment.objects.filter(post_id = post_id)
+    results = [comment.to_json() for comment in comments]
+
+    return HttpResponse(json.dumps(results), content_type="application/json")
 
 #GET comment by id
 def comment_detail(request, post_id, comment_id):
-    comment = Comment.objects.filter(post_id = post_id, id=comment_id).values()
-    comment = list(comment) 
-    return JsonResponse(comment, safe=False)
+    comments = Comment.objects.filter(post_id = post_id, id=comment_id)
+    results = [comment.to_json() for comment in comments]
+
+    return HttpResponse(json.dumps(results), content_type="application/json")
 
 #POST add a vote to a comment
 def comment_add_vote(request, post_id, comment_id):
@@ -79,11 +84,15 @@ def comment_minus_vote(request, post_id, comment_id):
 ####### USER VIEWS #######
 def user_profile(request, username):
     user = User.objects.get(username = username)
-    user_profile = RedditProfile.objects.filter(user_id = user.id).values()
-    profile_json = post = list(user_profile) 
-    return JsonResponse(profile_json, safe=False)
+    profile = RedditProfile.objects.get(user_id = user)
+    results = [profile.to_json()]
+    return HttpResponse(json.dumps(results), content_type="application/json")
+
 
 def user_posts (request, username):
+    ##
     user = User.objects.get(username = username)
-    posts = serializers.serialize('json', TextPost.objects.filter(user_id = user.id))
-    return HttpResponse(posts, content_type='json')
+    posts = TextPost.objects.filter(user_id = user)
+    results = [post.to_json() for post in posts]
+
+    return HttpResponse(json.dumps(results), content_type="application/json")

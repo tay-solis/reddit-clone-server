@@ -49,6 +49,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'reddit_clone.middleware.dev_cors_middleware'
+
 ]
 
 ROOT_URLCONF = 'reddit_clone_server_project.urls'
@@ -114,6 +116,8 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
+
+CSRF_COOKIE_NAME = "csrftoken"
 
 
 # Static files (CSS, JavaScript, Images)
