@@ -38,19 +38,21 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'reddit_clone',
-    'accounts'
+    'accounts',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    # 'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'reddit_clone.middleware.dev_cors_middleware'
-
+    # 'reddit_clone.middleware.dev_cors_middleware'
+    
 ]
 
 ROOT_URLCONF = 'reddit_clone_server_project.urls'
@@ -117,7 +119,16 @@ USE_L10N = True
 
 USE_TZ = True
 
+## CORS SHIT
+
 CSRF_COOKIE_NAME = "csrftoken"
+
+CORS_ORIGIN_ALLOW_ALL = True 
+
+CORS_ORIGIN_WHITELIST = (
+    'localhost:3000',
+    'localhost:8000'
+)
 
 
 # Static files (CSS, JavaScript, Images)

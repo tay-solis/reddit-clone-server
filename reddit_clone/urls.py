@@ -15,6 +15,10 @@ urlpatterns = [
     path('post/<int:post_id>/comments/<int:comment_id>/upvote', views.comment_upvote, name='comment_upvote'),
     path('post/<int:post_id>/comments/<int:comment_id>/downvote', views.comment_downvote, name='comment_downvote'),
 # User Paths
-    path('u/<username>', views.user_profile, name='user_profile'),
-    path('u/<username>/post/all', views.user_posts, name='user_posts'),
+    # path('u/<username>', views.user_profile, name='user_profile'),
+    # path('u/<username>/post/all', views.user_posts, name='user_posts'),
+# Subreddit Paths
+    path('r/all', views.all_subreddits, name='all_subreddits'),
+# Form Paths
+    path('post/addpost', views.add_post, name='add_post')
 ]
